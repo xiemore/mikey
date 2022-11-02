@@ -70,7 +70,7 @@ export default {
         good_price: '',
         good_num: 1,
         good_log:'',
-        good_type: 1
+        good_type: 1,
       },
       my_type: [
         {

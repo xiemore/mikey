@@ -1,5 +1,5 @@
 <template>
-  <HeaderLine></HeaderLine>
+  <HomeHeaderLine></HomeHeaderLine>
   <!--商品列表-->
   <div class="firstContainer">
     <HomeBanner></HomeBanner>
@@ -56,14 +56,14 @@
 
 
 <script>
-  import HeaderLine from "@/components/HeaderLine";
+  import HomeHeaderLine from "@/components/HomeHeaderLine";
   import HomeBanner from "@/components/HomeBanner";
   import {postRequest} from "@/utils/api";
   import {ElMessage} from "element-plus";
   import router from "@/router";
   export default {
     name: "HomePage",
-    components: {HeaderLine, HomeBanner, },
+    components: {HomeHeaderLine, HomeBanner, },
     data() {
       return {
         goods: [
