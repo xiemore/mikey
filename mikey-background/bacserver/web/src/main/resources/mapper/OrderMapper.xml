@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.web.modules.Orders">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="good_id" property="good_id" jdbcType="INTEGER"/>
+        <result column="good_name" property="good_name" jdbcType="VARCHAR"/>
+        <result column="his_user_name" property="his_user_name" jdbcType="VARCHAR"/>
+        <result column="his_phone_number" property="his_phone_number" jdbcType="VARCHAR"/>
+        <result column="order_stat" property="order_stat" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="WantsResultMap" type="com.example.web.modules.Want">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="good_name" property="good_name" jdbcType="VARCHAR"/>
+        <result column="true_name" property="true_name" jdbcType="VARCHAR"/>
+        <result column="phone_number" property="phone_number" jdbcType="VARCHAR"/>
+        <result column="good_id" property="good_id" jdbcType="INTEGER"/>
+        <result column="is_chosen" property="is_chosen" jdbcType="VARCHAR"/>
+        <result column="is_complete" property="is_complete" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getOrderCreatedBus" resultMap="BaseResultMap">
+        select distinct
+        orders.id, goods.id as good_id, goods.good_name, user_cus.user_name as his_user_name,
+        user_cus.phone_number as his_phone_number, orders.order_stat
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_bus.user_name = #{user_name} and orders.order_stat = '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getOrderCreatedCus" resultMap="BaseResultMap">
+        select distinct
+        orders.id, goods.id as good_id, goods.good_name, user_bus.user_name as his_user_name,
+        user_bus.phone_number as his_phone_number, orders.order_stat
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_cus.user_name = #{user_name} and orders.order_stat = '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getOrderDoneBus" resultMap="BaseResultMap">
+        select distinct
+        orders.id, goods.id as good_id, goods.good_name, user_cus.user_name as his_user_name,
+        user_cus.phone_number as his_phone_number, orders.order_stat
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_bus.user_name = #{user_name} and orders.order_stat != '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getOrderDoneCus" resultMap="BaseResultMap">
+        select distinct
+        orders.id, goods.id as good_id, goods.good_name, user_bus.user_name as his_user_name,
+        user_bus.phone_number as his_phone_number, orders.order_stat
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_cus.user_name = #{user_name} and orders.order_stat != '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotalCreatedBus" resultType="java.lang.Long">
+        select distinct
+        count(*)
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_bus.user_name = #{user_name} and orders.order_stat = '0'
+    </select>
+    <select id="getTotalCreatedCus" resultType="java.lang.Long">
+        select distinct
+        count(*)
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_cus.user_name = #{user_name} and orders.order_stat = '0'
+    </select>
+    <select id="getTotalDoneBus" resultType="java.lang.Long">
+        select distinct
+        count(*)
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_bus.user_name = #{user_name} and orders.order_stat != '0'
+    </select>
+    <select id="getTotalDoneCus" resultType="java.lang.Long">
+        select distinct
+        count(*)
+        from
+        orders, goods, users as user_bus, users as user_cus
+        where
+        user_cus.id = orders.user_id and goods.id = orders.good_id and goods.users_id = user_bus.id
+        and user_cus.user_name = #{user_name} and orders.order_stat != '0'
+    </select>
+    <insert id="createOneOrder">
+        insert into
+        orders
+        (good_id, user_id, order_stat)
+        values
+        (#{good_id}, #{user_id}, '0')
+    </insert>
+    <update id="lock">
+        update
+        goods
+        set
+        good_locker = '1'
+        where
+        id = #{good_id} and good_locker = '0'
+    </update>
+    <update id="unlock">
+        update
+        goods
+        set
+        good_locker = '0'
+        where
+        id = #{good_id} and good_locker = '1'
+    </update>
+    <update id="cancelOrderFirst">
+        update
+        orders
+        set
+        order_stat = '1'
+        where
+        id = #{order_id}
+    </update>
+    <update id="completeOrderFirst">
+        update
+        orders
+        set
+        order_stat = '2'
+        where
+        id = #{order_id}
+    </update>
+    <update id="cancelOrderSecond">
+        update
+        goods
+        set
+        good_locker = '0'
+        where
+        id = #{good_id}
+    </update>
+    <update id="completeOrderSecond">
+        update
+        goods
+        set
+        good_locker = '0', good_num = good_num - 1
+        where
+        id = #{good_id}
+    </update>
+    <!--以下是基线需求所需要的代码-->
+    <update id="disableWants">
+        update
+        wants
+        set
+        is_chosen = '2', is_complete = '1'
+        where
+        good_id = #{good_id}
+    </update>
+    <update id="chooseWants">
+        update
+        wants
+        set
+        is_chosen = '1', is_complete = '0'
+        where
+        id = #{id}
+    </update>
+    <insert id="createWant">
+        insert into
+        wants
+        (true_name, phone_number, good_id, is_chosen, is_complete)
+        values
+        (#{true_name}, #{phone_number}, #{id}, '0', '0')
+    </insert>
+    <insert id="createWantSecond">
+        update
+        goods
+        set
+        good_wants = good_wants + 1
+        where
+        id = #{id}
+    </insert>
+    <update id="completeWant">
+        update
+        wants
+        set
+        is_complete = '2'
+        where
+        id = #{id}
+    </update>
+    <update id="failWant">
+        update
+        wants
+        set
+        is_complete = '1'
+        where
+        id = #{id}
+    </update>
+    <select id="selectWantsNow" resultMap="WantsResultMap">
+        select
+        wants.id, goods.good_name, wants.true_name, wants.phone_number, wants.good_id, wants.is_chosen, wants.is_complete
+        from
+        users, wants, goods
+        where
+        users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_chosen = '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="selectWantsDone" resultMap="WantsResultMap">
+        select
+        wants.id, goods.good_name, wants.true_name, wants.phone_number, wants.good_id, wants.is_chosen, wants.is_complete
+        from
+        users, wants, goods
+        where
+        users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_chosen != '0'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="selectOrNow" resultMap="WantsResultMap">
+        select
+        wants.id, goods.good_name, wants.true_name, wants.phone_number, wants.good_id, wants.is_chosen, wants.is_complete
+        from
+        users, wants, goods
+        where
+        users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_complete = '0' and wants.is_chosen = '1'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="selectOrDone" resultMap="WantsResultMap">
+        select
+        wants.id, goods.good_name, wants.true_name, wants.phone_number, wants.good_id, wants.is_chosen, wants.is_complete
+        from
+        users, wants, goods
+        where
+        users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_complete != '0' and wants.is_chosen = '1'
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+
+<!--    获取对应的数量-->
+    <select id="selectWantsNowTotal" resultType="java.lang.Long">
+        select distinct
+            count(*)
+        from
+            users, wants, goods
+        where
+            users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_chosen = '0'
+    </select>
+    <select id="selectWantsDoneTotal" resultType="java.lang.Long">
+        select distinct
+            count(*)
+        from
+            users, wants, goods
+        where
+            users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_chosen != '0'
+    </select>
+    <select id="selectOrNowTotal" resultType="java.lang.Long">
+        select distinct
+            count(*)
+        from
+            users, wants, goods
+        where
+            users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_complete = '0' and wants.is_chosen = '1'
+    </select>
+    <select id="selectOrDoneTotal" resultType="java.lang.Long">
+        select distinct
+            count(*)
+        from
+            users, wants, goods
+        where
+            users.user_name = #{user_name} and users.id = goods.users_id and goods.id = wants.good_id and wants.is_complete != '0' and wants.is_chosen = '1'
+    </select>
+</mapper>

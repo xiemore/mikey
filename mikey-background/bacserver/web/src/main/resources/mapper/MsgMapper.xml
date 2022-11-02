@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.mapper.MsgMapper">
+    <resultMap id="BaseResultMap" type="com.example.web.modules.OneToOneMsg">
+        <result column="id" property="id" jdbcType="INTEGER"></result>
+        <result column="from_user_id" property="from_user_id" jdbcType="INTEGER"></result>
+        <result column="to_user_id" property="to_user_id" jdbcType="INTEGER"></result>
+        <result column="message" property="message" jdbcType="VARCHAR"></result>
+        <result column="date" property="date" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <insert id="addMsg">
+        insert into
+        msg
+        (from_user_id, to_user_id, message, date_str)
+        values
+        (#{from_user_id}, #{to_user_id}, #{message}, #{date_str})
+    </insert>
+</mapper>

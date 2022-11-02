@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.mapper.GoodMapper">
+    <resultMap id="BaseResultMap" type="com.example.web.modules.Good">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="user_name" jdbcType="VARCHAR"/>
+        <result column="good_name" property="good_name" jdbcType="VARCHAR"/>
+        <result column="good_num" property="good_num" jdbcType="INTEGER"/>
+        <result column="good_locker" property="good_locker" jdbcType="VARCHAR"/>
+        <result column="good_price" property="good_price" jdbcType="FLOAT"/>
+        <result column="good_log" property="good_log" jdbcType="VARCHAR"/>
+        <result column="good_pics" property="good_pics" jdbcType="VARCHAR"/>
+        <result column="good_type" property="good_type" jdbcType="VARCHAR"/>
+        <result column="good_price_log" property="good_price_log" jdbcType="VARCHAR"/>
+        <result column="good_wants" property="good_wants" jdbcType="INTEGER"/>
+        <result column="down" property="down" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="BaseColumnList">
+        goods.id, users.user_name, goods.good_name, goods.good_num, goods.good_locker, goods.good_price, goods.good_log,
+        goods.good_pics, types.type_name as good_type, goods.good_price_log
+    </sql>
+    <select id="selectAllGoods" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"></include>
+        from
+        users, goods, types
+        where
+        users.id = goods.users_id and types.id = goods.good_type and goods.down = '1'
+        <if test="good_type != null and good_type != ''">
+            and types.type_name = #{good_type}
+        </if>
+        <if test="good_name != null and good_name != ''">
+            and goods.good_name like concat('%', #{good_name}, '%')
+        </if>
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="selectAllGoodsByUser" resultMap="BaseResultMap">
+        select
+        goods.id, users.user_name, goods.good_name, goods.good_num, goods.good_locker, goods.good_price, goods.good_log,
+        goods.good_pics, types.type_name as good_type, goods.good_price_log, goods.good_wants
+        from
+        users, goods, types
+        where
+        users.id = goods.users_id and types.id = goods.good_type and users.id = #{id} and goods.down = #{type}
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="selectTotal" resultType="java.lang.Long">
+        select
+        count(*)
+        from
+        users, goods, types
+        where
+        users.id = goods.users_id and types.id = goods.good_type and goods.down = '1'
+        <if test="good_type != null and good_type != ''">
+            and types.type_name = #{good_type}
+        </if>
+        <if test="good_name != null and good_name != ''">
+            and goods.good_name like concat('%', #{good_name}, '%')
+        </if>
+    </select>
+    <select id="selectTotalByUser" resultType="java.lang.Long">
+        select
+        count(*)
+        from
+        users, goods, types
+        where
+        users.id = goods.users_id and types.id = goods.good_type and users.id = #{id} and goods.down = #{type}
+    </select>
+    <select id="findGoodById" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"></include>
+        from
+        users, goods, types
+        where
+        users.id = goods.users_id and types.id = goods.good_type and goods.id = #{id}
+    </select>
+    <update id="deleteGoodById">
+        update
+        goods
+        set
+        goods.down = '0'
+        where
+        id = #{id}
+    </update>
+    <update id="resetGoodById">
+        update
+        goods
+        set
+        good_num = #{num}, good_price = #{price}, good_price_log = #{price_log}
+        where
+        id = #{id}
+    </update>
+    <insert id="addGoodFirst" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.web.modules.Good" keyColumn="id">
+        insert into
+        goods
+        (users_id, good_name, good_num, good_locker, good_price, good_log, good_pics, good_type, good_price_log, good_wants, down)
+        values
+        (#{user_name_id}, #{good_name}, #{good_num}, '0', #{good_price}, #{good_log}, #{good_pics}, #{good_type_id}, #{good_price_log}, 0, '1')
+    </insert>
+    <update id="addGoodSecond">
+        update
+        goods
+        set
+        good_pics = #{good_pics}
+        where
+        id = #{id}
+    </update>
+</mapper>
