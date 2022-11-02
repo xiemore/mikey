@@ -22,7 +22,7 @@
           </div>
         <div class="detailGroup">
           <div class="name">{{good.good_name}}</div>
-          <div class="type">{{good.good_type}}</div>
+<!--          <div class="type">{{good.good_type}}</div>-->
           <div class="log">{{good.good_log}}</div>
           <div class="price_log">
             <el-table height="250px" :data="good.good_price_log">

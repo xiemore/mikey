@@ -4,12 +4,12 @@
       <el-input size="default" type="text" auto-complete="off" v-model="Form.good_name"
                 placeholder="请输入商品名"></el-input>
     </el-form-item>
-    <el-form-item prop="good_type" label="品类">
-      <el-select v-model="Form.good_type" placeholder="请选择一种品类">
-        <el-option v-for="types in my_type" :key="types.id" :label="types.type_name" :value="types.id">
-        </el-option>
-      </el-select>
-    </el-form-item>
+<!--    <el-form-item prop="good_type" label="品类">-->
+<!--      <el-select v-model="Form.good_type" placeholder="请选择一种品类">-->
+<!--        <el-option v-for="types in my_type" :key="types.id" :label="types.type_name" :value="types.id">-->
+<!--        </el-option>-->
+<!--      </el-select>-->
+<!--    </el-form-item>-->
     <el-form-item prop="good_price" label="价格">
       <el-input size="default" type="text" auto-complete="off" v-model="Form.good_price"
                 placeholder="请输输入价格"></el-input>
@@ -70,7 +70,7 @@ export default {
         good_price: '',
         good_num: 1,
         good_log:'',
-        good_type: ''
+        good_type: 1
       },
       my_type: [
         {

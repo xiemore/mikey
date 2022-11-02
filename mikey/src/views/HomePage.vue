@@ -5,14 +5,14 @@
     <HomeBanner></HomeBanner>
     <div class="secondContainer">
       <div class="sidebar">
-        <el-table :data="type_list">
-          <el-table-column>
-            <template v-slot="scope">
-              <a href="javascript:" @click="search_by_type(scope.row.type_name)">
-                {{scope.row.type_name}}</a>
-            </template>
-          </el-table-column>
-        </el-table>
+<!--        <el-table :data="type_list">-->
+<!--          <el-table-column>-->
+<!--            <template v-slot="scope">-->
+<!--              <a href="javascript:" @click="search_by_type(scope.row.type_name)">-->
+<!--                {{scope.row.type_name}}</a>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--        </el-table>-->
       </div>
       <div class="thirdContainer">
         <div>
