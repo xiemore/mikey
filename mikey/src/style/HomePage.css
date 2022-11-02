@@ -1,0 +1,50 @@
+ul{
+    height: auto;
+} .liType{
+      list-style-type: none;
+      width: 240px;
+      float: left;
+      position: relative;
+      z-index: 1;
+      margin-right: 40px;
+      margin-top: 10px;
+  }
+el-table-column{
+    height: 200px;
+}
+.goodList{
+    margin-bottom: 20px;
+    height: auto;
+    z-index: 1;
+}
+.price{
+    float: left;
+    margin-right: 10px;
+    color: #e4393c;
+    font-size: 20px;
+}
+.div_price{
+    position: relative;
+    line-height: 22px;
+    height: 22px;
+    overflow: hidden;
+    width: 100%;
+    margin: 0 0 8px;
+}
+.div_name{
+    line-height: 20px;
+    height: 40px;
+    font-size: 12px;
+    overflow: hidden;
+}
+.myInput{
+    width: 50%;
+}
+.myText{
+    width: 90%;
+    float: left;
+}
+.myB{
+    float: right;
+    clear: right;
+}

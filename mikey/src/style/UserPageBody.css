@@ -1,0 +1,28 @@
+.user_page_sidebar{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    float: right;
+    width: 300px;
+    margin-right: -300px;
+    position: relative;
+    height: 80vh;
+}
+.this_firstContainer{
+    float: right;
+    width: 100%;
+}
+.this_secondContainer{
+    position: relative;
+    margin-left: 300px;
+}
+.pageContainer{
+    clear: left;
+    display: flex;
+    justify-content: flex-end
+}
+.hello{
+    font-weight: bolder;
+    font-size: xxx-large;
+    font-family: "方正赵孟頫行书 简繁";
+}

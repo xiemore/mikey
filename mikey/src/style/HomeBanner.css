@@ -1,0 +1,16 @@
+.home_banner {
+    width: 1240px;
+    height: 500px;
+    position: relative;
+    left: 0;
+    top: 0;
+    z-index: 98;
+    text-align: center;
+}
+.img_1 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1240px;
+    /* 淡入淡出过渡时间 */
+}

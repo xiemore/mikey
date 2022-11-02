@@ -1,0 +1,23 @@
+.firstContainer{
+    height: 70vh;
+}
+.sidebar{
+    width: 300px;
+    height: 80vh;
+    float: left;
+}
+.secondContainer{
+} .thirdContainer{
+      margin-left: 300px;
+      /*height: 100vh;*/
+  }
+.pageContainer{
+    clear: left;
+    display: flex;
+    justify-content: flex-end
+}
+a{
+    text-decoration: none;
+    color: #505458
+}
+
